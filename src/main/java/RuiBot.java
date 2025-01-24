@@ -7,19 +7,41 @@ public class RuiBot {
     public RuiBot() {
         this.itemsList = new ArrayList<>();
     }
-    public void addItems(String item) {
-        Task task = new Task(item);
+    public void addItems(String input) {
+        Task task;
+        String details[];
+        String item;
+
+        if (input.startsWith("todo")) {
+            item = input.substring(5);
+            task = new ToDo(item);
+        } else if (input.startsWith("deadline")) {
+            details = input.substring(9).split(" /by ");
+            item = details[0];
+            String endDate = details[1];
+            task = new Deadline(item, endDate);
+        } else {
+            details = input.substring(6).split(" /from ");
+            item = details[0];
+            String startDate = details[1].split(" /to ")[0];
+            String endDate = details[1].split(" /to ")[1];
+            task = new Event(item, startDate, endDate);
+        }
+
         this.itemsList.add(task);
         
         System.out.println("____________________________________________________________\n"
-                + "added: " + task.name + "\n"
+                + "Got it. I've added this task:\n"
+                + task.taskString() + "\n"
+                + "Now you have " + this.itemsList.size() + " tasks in the list.\n"
                 + "____________________________________________________________\n");
     }
 
     public void printList() {
         int itemsNum = this.itemsList.size();
 
-        System.out.println("____________________________________________________________\n");
+        System.out.println("____________________________________________________________\n"
+                + "Here are the tasks in your list:");
 
         for (int i = 0; i < itemsNum; i++) {
             System.out.println(i + 1 + ". " + this.itemsList.get(i).taskString() + "\n");

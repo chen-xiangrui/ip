@@ -1,4 +1,4 @@
-public class Task {
+abstract class Task {
     String name;
     boolean isCompleted;
 
@@ -11,9 +11,5 @@ public class Task {
         this.isCompleted = !this.isCompleted;
     }
 
-    public String taskString() {
-        String mark = isCompleted ? "[X]" : "[ ]";
-
-        return mark + " " + this.name;
-    }
+    public abstract String taskString();
 }
