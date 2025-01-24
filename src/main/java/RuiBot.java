@@ -7,7 +7,7 @@ public class RuiBot {
     public RuiBot() {
         this.itemsList = new ArrayList<>();
     }
-    public void addItems(String input) throws EmptyTaskException {
+    public void addItem(String input) throws EmptyTaskException {
         Task task;
         String details[];
         String item;
@@ -80,6 +80,16 @@ public class RuiBot {
                 + "____________________________________________________________\n");
     }
 
+    public void deleteItem(int index) {
+        Task removedItem = this.itemsList.remove(index - 1);
+
+        System.out.println("____________________________________________________________\n"
+                + "Noted. I've removed this task:\n"
+                + removedItem.taskString() + "\n"
+                + "Now you have " + this.itemsList.size() + " tasks in the list.\n"
+                + "____________________________________________________________\n");
+    }
+
     public static void main(String[] args) {
         String logo = "____________________________________________________________\n"
             + "Hello! I'm RuiBot\n"
@@ -106,7 +116,9 @@ public class RuiBot {
                 } else if (input.startsWith("unmark")) {
                     ruibot.unmarkItem(Integer.parseInt(input.substring(7)));
                 } else if (input.startsWith("todo") || input.startsWith("deadline") || input.startsWith("event")) {
-                    ruibot.addItems(input);
+                    ruibot.addItem(input);
+                } else if (input.startsWith("delete")) {
+                    ruibot.deleteItem(Integer.parseInt(input.substring(7)));
                 } else {
                     throw new WrongInputException();
                 }
