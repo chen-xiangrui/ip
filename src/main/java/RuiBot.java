@@ -1,12 +1,16 @@
 import java.io.IOException;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
-import java.nio.file.Files;
 import java.io.FileWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class RuiBot {
     ArrayList<Task> itemsList;
+    static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
     public RuiBot() {
         this.itemsList = new ArrayList<>();
@@ -29,7 +33,8 @@ public class RuiBot {
             details = input.substring(9).split(" /by ");
             item = details[0];
             String endDate = details[1];
-            task = new Deadline(item, isCompleted, endDate);
+            String formattedEndDate = LocalDateTime.parse(endDate, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
+            task = new Deadline(item, isCompleted, formattedEndDate);
         } else {
             if (input.length() <= 6) {
                 throw new EmptyTaskException();
@@ -40,8 +45,10 @@ public class RuiBot {
                 throw new EmptyTaskException();
             }
             String startDate = details[1].split(" /to ")[0];
+            String formattedStartDate = LocalDateTime.parse(startDate, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
             String endDate = details[1].split(" /to ")[1];
-            task = new Event(item, isCompleted, startDate, endDate);
+            String formattedEndDate = LocalDateTime.parse(endDate, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
+            task = new Event(item, isCompleted, formattedStartDate, formattedEndDate);
         }
 
         this.itemsList.add(task);
@@ -147,16 +154,19 @@ public class RuiBot {
                     String remaining_line = line.substring(8);
                     String[] split_line = remaining_line.split(" \\(by: ");
                     String name = split_line[0];
-                    String endDate = split_line[0].split("\\)")[0];
-                    item = "deadline " + name + " /by " + endDate;
+                    String endDate = split_line[1].split("\\)")[0];
+                    String formattedEndDate = LocalDateTime.parse(endDate, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
+                    item = "deadline " + name + " /by " + formattedEndDate;
                 } else {
                     String remaining_line = line.substring(8);
                     String[] split_line = remaining_line.split(" \\(from: ");
                     String name = split_line[0];
                     String[] dates = split_line[1].split(" to: ");
                     String startDate = dates[0];
+                    String formattedStartDate = LocalDateTime.parse(startDate, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
                     String endDate = dates[1].split("\\)")[0];
-                    item = "event " + name + " /from " + startDate + " /to " + endDate;
+                    String formattedEndDate = LocalDateTime.parse(endDate, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
+                    item = "event " + name + " /from " + formattedStartDate + " /to " + formattedEndDate;
                 }
                 ruibot.addItem(item, isCompleted, true);
             }
