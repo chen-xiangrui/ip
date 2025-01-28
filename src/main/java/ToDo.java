@@ -1,7 +1,7 @@
 public class ToDo extends Task {
 
-    public ToDo(String name) {
-        super(name);
+    public ToDo(String name, boolean isCompleted) {
+        super(name, isCompleted);
     }
 
     public String taskString(){

@@ -1,0 +1,5 @@
+[T] [ ] run
+[T] [ ] gym
+[E] [X] project meeting (from: Mon 2pm to: 4pm)
+[D] [ ] return book (by: return book)
+[T] [ ] hehehehe

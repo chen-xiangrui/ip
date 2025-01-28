@@ -1,5 +1,9 @@
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.File;
+import java.nio.file.Files;
+import java.io.FileWriter;
 
 public class RuiBot {
     ArrayList<Task> itemsList;
@@ -7,7 +11,7 @@ public class RuiBot {
     public RuiBot() {
         this.itemsList = new ArrayList<>();
     }
-    public void addItem(String input) throws EmptyTaskException {
+    public void addItem(String input, boolean isCompleted, boolean isStart) throws EmptyTaskException {
         Task task;
         String details[];
         String item;
@@ -17,7 +21,7 @@ public class RuiBot {
                 throw new EmptyTaskException();
             }
             item = input.substring(5);
-            task = new ToDo(item);
+            task = new ToDo(item, isCompleted);
         } else if (input.startsWith("deadline")) {
             if (input.length() <= 9) {
                 throw new EmptyTaskException();
@@ -25,7 +29,7 @@ public class RuiBot {
             details = input.substring(9).split(" /by ");
             item = details[0];
             String endDate = details[1];
-            task = new Deadline(item, endDate);
+            task = new Deadline(item, isCompleted, endDate);
         } else {
             if (input.length() <= 6) {
                 throw new EmptyTaskException();
@@ -37,16 +41,20 @@ public class RuiBot {
             }
             String startDate = details[1].split(" /to ")[0];
             String endDate = details[1].split(" /to ")[1];
-            task = new Event(item, startDate, endDate);
+            task = new Event(item, isCompleted, startDate, endDate);
         }
 
         this.itemsList.add(task);
-        
-        System.out.println("____________________________________________________________\n"
-                + "Got it. I've added this task:\n"
-                + task.taskString() + "\n"
-                + "Now you have " + this.itemsList.size() + " tasks in the list.\n"
-                + "____________________________________________________________\n");
+
+        if (!isStart) {
+            System.out.println("____________________________________________________________\n"
+                    + "Got it. I've added this task:\n"
+                    + task.taskString() + "\n"
+                    + "Now you have " + this.itemsList.size() + " tasks in the list.\n"
+                    + "____________________________________________________________\n");
+        }
+
+        this.updateTextFile();
     }
 
     public void printList() {
@@ -69,6 +77,8 @@ public class RuiBot {
                 + "Nice! I've marked this task as done:\n"
                 + this.itemsList.get(index - 1).taskString() + "\n"
                 + "____________________________________________________________\n");
+
+        this.updateTextFile();
     }
 
     public void unmarkItem(int index) {
@@ -78,6 +88,8 @@ public class RuiBot {
                 + "OK, I've marked this task as not done yet:\n"
                 + this.itemsList.get(index - 1).taskString() + "\n"
                 + "____________________________________________________________\n");
+
+        this.updateTextFile();
     }
 
     public void deleteItem(int index) {
@@ -88,6 +100,20 @@ public class RuiBot {
                 + removedItem.taskString() + "\n"
                 + "Now you have " + this.itemsList.size() + " tasks in the list.\n"
                 + "____________________________________________________________\n");
+
+        this.updateTextFile();
+    }
+
+    public void updateTextFile() {
+        try {
+            FileWriter fw = new FileWriter("./data/ruibot.txt", false);
+            for (Task task : this.itemsList) {
+                fw.write(task.taskString() + System.lineSeparator());
+            }
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
@@ -96,11 +122,53 @@ public class RuiBot {
             + "What can I do for you?\n"
             + "____________________________________________________________\n";
 
-        RuiBot ruibot = new RuiBot();
-
         System.out.println(logo);
 
+        RuiBot ruibot = new RuiBot();
         Scanner scanner = new Scanner(System.in);
+
+        try {
+            String filepath = "./data/ruibot.txt";
+            File file = new File(filepath);
+            file.createNewFile();
+            Scanner fileScanner = new Scanner(file);
+            ArrayList<String> lines = new ArrayList<>();
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                lines.add(line);
+            }
+
+            for (String line : lines) {
+                String item;
+                boolean isCompleted = (line.charAt(5) == 'X');
+                if (line.charAt(1) == 'T') {
+                    item = "todo " + line.substring(8);
+                } else if (line.charAt(1) == 'D') {
+                    String remaining_line = line.substring(8);
+                    String[] split_line = remaining_line.split(" \\(by: ");
+                    String name = split_line[0];
+                    String endDate = split_line[0].split("\\)")[0];
+                    item = "deadline " + name + " /by " + endDate;
+                } else {
+                    String remaining_line = line.substring(8);
+                    String[] split_line = remaining_line.split(" \\(from: ");
+                    String name = split_line[0];
+                    String[] dates = split_line[1].split(" to: ");
+                    String startDate = dates[0];
+                    String endDate = dates[1].split("\\)")[0];
+                    item = "event " + name + " /from " + startDate + " /to " + endDate;
+                }
+                ruibot.addItem(item, isCompleted, true);
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("____________________________________________________________\n"
+                    + "OOPS!! " + e.getMessage() + "\n"
+                    + "____________________________________________________________\n");
+        }
+
         while (true) {
             try {
                 String input = scanner.nextLine();
@@ -116,7 +184,7 @@ public class RuiBot {
                 } else if (input.startsWith("unmark")) {
                     ruibot.unmarkItem(Integer.parseInt(input.substring(7)));
                 } else if (input.startsWith("todo") || input.startsWith("deadline") || input.startsWith("event")) {
-                    ruibot.addItem(input);
+                    ruibot.addItem(input, false, false);
                 } else if (input.startsWith("delete")) {
                     ruibot.deleteItem(Integer.parseInt(input.substring(7)));
                 } else {
