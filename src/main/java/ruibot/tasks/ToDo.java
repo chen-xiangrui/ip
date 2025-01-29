@@ -1,3 +1,7 @@
+package ruibot.tasks;
+
+import ruibot.tasks.Task;
+
 public class ToDo extends Task {
 
     public ToDo(String name, boolean isCompleted) {

@@ -1,3 +1,5 @@
+package ruibot.tasks;
+
 public class Event extends Task {
     String startDate;
     String endDate;

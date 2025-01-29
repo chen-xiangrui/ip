@@ -1,3 +1,5 @@
+package ruibot;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,7 +12,7 @@ public class Ui {
 
     public void welcomeMessage() {
         String logo = "____________________________________________________________\n"
-            + "Hello! I'm RuiBot\n"
+            + "Hello! I'm ruibot.RuiBot\n"
             + "What can I do for you?\n"
             + "____________________________________________________________\n";
 

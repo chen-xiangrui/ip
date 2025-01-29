@@ -1,3 +1,6 @@
+package ruibot;
+
+import ruibot.tasks.Task;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;

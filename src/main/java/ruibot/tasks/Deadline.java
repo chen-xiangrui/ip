@@ -1,3 +1,5 @@
+package ruibot.tasks;
+
 public class Deadline extends Task {
     String endDate;
 

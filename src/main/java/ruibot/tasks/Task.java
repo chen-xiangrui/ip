@@ -1,4 +1,6 @@
-abstract class Task {
+package ruibot.tasks;
+
+public abstract class Task {
     String name;
     boolean isCompleted;
 
