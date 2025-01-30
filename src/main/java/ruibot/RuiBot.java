@@ -24,21 +24,23 @@ public class RuiBot {
                         break;
                     } else if (command.equals("list")) {
                         ruibot.tasks.printList();
-                    } else if (command.startsWith("mark")) {
+                    } else if (command.equals("mark")) {
                         int index = Integer.parseInt(input.substring(5));
                         ruibot.tasks.markItem(index);
                         ruibot.storage.save(ruibot.tasks.getTasks());
-                    } else if (command.startsWith("unmark")) {
+                    } else if (command.equals("unmark")) {
                         int index = Integer.parseInt(input.substring(7));
                         ruibot.tasks.unmarkItem(index);
                         ruibot.storage.save(ruibot.tasks.getTasks());
-                    } else if (command.startsWith("todo") || input.startsWith("deadline") || input.startsWith("event")) {
+                    } else if (command.equals("todo") || input.startsWith("deadline") || input.startsWith("event")) {
                         ruibot.tasks.addItem(input, false, false);
                         ruibot.storage.save(ruibot.tasks.getTasks());
-                    } else if (command.startsWith("delete")) {
+                    } else if (command.equals("delete")) {
                         int index = Integer.parseInt(input.substring(7));
                         ruibot.tasks.deleteItem(index);
                         ruibot.storage.save(ruibot.tasks.getTasks());
+                    } else if (command.equals("find")) {
+                        ruibot.tasks.find(input.substring(5));
                     } else {
                         throw new WrongInputException();
                     }
