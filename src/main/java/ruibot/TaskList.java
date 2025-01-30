@@ -8,11 +8,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+* The TaskList class reperesents the list of tasks of RuiBot.
+* Its functionalities include adding, marking, unmarking, deleting tasks, as well as printing a list of tasks.
+*/
 public class TaskList {
     private ArrayList<Task> tasks;
     static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
+    /**
+    * Constructor to initialise the TaskList with list of string inputs from user.
+    * @param lines List of strings with each string containing input of a task by user.
+    * @throws EmptyTaskException if task is empty.
+    */
     public TaskList(ArrayList<String> lines) throws EmptyTaskException {
         this.tasks = new ArrayList<>();
         for (String line : lines) {
@@ -42,6 +51,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds task to list of tasks.
+     * @param input Input of a task by the user.
+     * @param isCompleted Indicates whether the task has been completed.
+     * @param isStart Indicates whether this method is being called when the RuiBot is first started.
+     * @throws EmptyTaskException if the task is empty.
+     */
     public void addItem(String input, boolean isCompleted, boolean isStart) throws EmptyTaskException {
         Task task;
         String details[];
@@ -89,6 +105,9 @@ public class TaskList {
         }
     }
 
+    /**
+     * Prints the list of tasks.
+     */
     public void printList() {
         int itemsNum = this.tasks.size();
 
@@ -102,6 +121,10 @@ public class TaskList {
         System.out.println("____________________________________________________________\n");
     }
 
+    /**
+     * Marks a task as completed.
+     * @param index The index of the task in the list.
+     */
     public void markItem(int index) {
         this.tasks.get(index - 1).changeStatus();
 
@@ -111,6 +134,10 @@ public class TaskList {
                 + "____________________________________________________________\n");
     }
 
+    /**
+     * Unmarks a task that was previously marked as completed.
+     * @param index The index of the task in the list.
+     */
     public void unmarkItem(int index) {
         this.tasks.get(index - 1).changeStatus();
 
@@ -120,6 +147,10 @@ public class TaskList {
                 + "____________________________________________________________\n");
     }
 
+    /**
+     * Deletes a task from the list of tasks.
+     * @param index The index of the task in the list.
+     */
     public void deleteItem(int index) {
         Task removedItem = this.tasks.remove(index - 1);
 
@@ -130,6 +161,10 @@ public class TaskList {
                 + "____________________________________________________________\n");
     }
 
+    /**
+     * Provides the list of tasks.
+     * @return The list of tasks.
+     */
     public ArrayList<Task> getTasks() {
         return this.tasks;
     }

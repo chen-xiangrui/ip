@@ -1,10 +1,19 @@
 package ruibot;
 
+/**
+ * The RuiBot class is the entry point for execution of the task bot.
+ * It combines the UI, storage of the tasks and the functionalities of the bot together as one.
+ */
 public class RuiBot {
     private TaskList tasks;
     private Storage storage;
     private Ui ui;
 
+    /**
+     * Constructor to initialise the RuiBot with the filepath of ruibot.txt.
+     * @param filePath The filepath of the ruibot.txt storing the tasks.
+     * @throws EmptyTaskException if the task is empty.
+     */
     public RuiBot(String filePath) throws EmptyTaskException {
         this.ui = new Ui();
         this.storage = new Storage(filePath);

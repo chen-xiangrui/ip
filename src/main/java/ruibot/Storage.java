@@ -7,11 +7,18 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The Storage class handles the file operations, loading and saving tasks into the ruibot.txt.
+ */
 public class Storage {
     private File file;
     private Scanner scanner;
     private String filePath;
 
+    /**
+     * Constructor to initialise Storage with the filepath of ruibot.txt.
+     * @param filePath The filepath of ruibot.txt.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
         try {
@@ -24,6 +31,10 @@ public class Storage {
         }
     }
 
+    /**
+     * Load the tasks stored in ruibot.txt.
+     * @return List of strings with each string containing the task.
+     */
     public ArrayList<String> load() {
         ArrayList<String> lines = new ArrayList<>();
         while (this.scanner.hasNext()) {
@@ -33,6 +44,10 @@ public class Storage {
         return lines;
     }
 
+    /**
+     * Save the tasks into ruibot.txt.
+     * @param tasks List of tasks to be stored.
+     */
     public void save(ArrayList<Task> tasks) {
         try {
             FileWriter fw = new FileWriter(this.filePath, false);
