@@ -1,10 +1,14 @@
 package ruibot;
 
-import ruibot.tasks.Task;
 import java.io.IOException;
+
+import ruibot.tasks.Task;
+
 import java.io.File;
 import java.io.FileWriter;
+
 import java.util.ArrayList;
+
 import java.util.Scanner;
 
 public class Storage {
