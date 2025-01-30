@@ -127,7 +127,11 @@ public class TaskList {
      * Marks a task as completed.
      * @param index The index of the task in the list.
      */
-    public void markItem(int index) {
+    public void markItem(int index) throws WrongInputException {
+        if (this.tasks.get(index - 1).isTaskCompleted()) {
+            throw new WrongInputException();
+        }
+
         this.tasks.get(index - 1).changeStatus();
 
         System.out.println("____________________________________________________________\n"
@@ -140,7 +144,11 @@ public class TaskList {
      * Unmarks a task that was previously marked as completed.
      * @param index The index of the task in the list.
      */
-    public void unmarkItem(int index) {
+    public void unmarkItem(int index) throws WrongInputException {
+        if (!this.tasks.get(index - 1).isTaskCompleted()) {
+            throw new WrongInputException();
+        }
+        
         this.tasks.get(index - 1).changeStatus();
 
         System.out.println("____________________________________________________________\n"
@@ -169,5 +177,26 @@ public class TaskList {
      */
     public ArrayList<Task> getTasks() {
         return this.tasks;
+    }
+
+    public void find(String keyword) {
+        ArrayList<Task> results = new ArrayList<>();
+
+        for (Task task : this.tasks) {
+            if (task.contains(keyword)) {
+                results.add(task);
+            }
+        }
+
+        int itemsNum = results.size();
+
+        System.out.println("____________________________________________________________\n"
+                + "Here are the matching tasks in your list:");
+
+        for (int i = 0; i < itemsNum; i++) {
+            System.out.println(i + 1 + ". " + results.get(i).taskString() + "\n");
+        }
+
+        System.out.println("____________________________________________________________\n");
     }
 }
