@@ -1,5 +1,5 @@
 [T] [X] run
-[T] [ ] gym
+[T] [X] gym
 [E] [ ] project meeting (from: Feb 03 2024, 6:00 am to: Feb 03 2024, 8:00 am)
 [D] [ ] return book (by: Feb 01 2024, 6:00 pm)
 [T] [ ] run 2

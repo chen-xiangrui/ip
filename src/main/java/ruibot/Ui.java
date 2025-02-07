@@ -10,19 +10,13 @@ public class Ui {
         this.scanner = new Scanner(System.in);
     }
 
-    public void welcomeMessage() {
-        String logo = "____________________________________________________________\n"
-            + "Hello! I'm ruibot.RuiBot\n"
-            + "What can I do for you?\n"
-            + "____________________________________________________________\n";
-
-        System.out.println(logo);
+    public String welcomeMessage() {
+        return "Hello! I'm ruibot.RuiBot\n"
+            + "What can I do for you?\n";
     }
 
-    public void goodbyeMessage() {
-        System.out.println("____________________________________________________________\n"
-            + "Bye. Hope to see you again soon!\n"
-            + "____________________________________________________________\n");
+    public String goodbyeMessage() {
+        return "Bye. Hope to see you again soon!\n";
     }
 
     public String readCommand() {

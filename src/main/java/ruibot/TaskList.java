@@ -60,7 +60,7 @@ public class TaskList {
      * @param isStart Indicates whether this method is being called when the RuiBot is first started.
      * @throws EmptyTaskException if the task is empty.
      */
-    public void addItem(String input, boolean isCompleted, boolean isStart) throws EmptyTaskException {
+    public String addItem(String input, boolean isCompleted, boolean isStart) throws EmptyTaskException {
         Task task;
         String details[];
         String item;
@@ -99,76 +99,69 @@ public class TaskList {
         this.tasks.add(task);
 
         if (!isStart) {
-            System.out.println("____________________________________________________________\n"
-                    + "Got it. I've added this task:\n"
+            return "Got it. I've added this task:\n"
                     + task.taskString() + "\n"
-                    + "Now you have " + this.tasks.size() + " tasks in the list.\n"
-                    + "____________________________________________________________\n");
+                    + "Now you have " + this.tasks.size() + " tasks in the list.\n";
+        } else {
+            return "";
         }
     }
 
     /**
      * Prints the list of tasks.
      */
-    public void printList() {
+    public String returnList() {
         int itemsNum = this.tasks.size();
 
-        System.out.println("____________________________________________________________\n"
-                + "Here are the tasks in your list:");
+       String result = "Here are the tasks in your list:\n";
 
         for (int i = 0; i < itemsNum; i++) {
-            System.out.println(i + 1 + ". " + this.tasks.get(i).taskString() + "\n");
+            result += (i + 1) + ". " + this.tasks.get(i).taskString() + "\n";
         }
 
-        System.out.println("____________________________________________________________\n");
+        return result;
     }
 
     /**
      * Marks a task as completed.
      * @param index The index of the task in the list.
      */
-    public void markItem(int index) throws WrongInputException {
+    public String markItem(int index) throws WrongInputException {
         if (this.tasks.get(index - 1).isTaskCompleted()) {
             throw new WrongInputException();
         }
 
         this.tasks.get(index - 1).changeStatus();
 
-        System.out.println("____________________________________________________________\n"
-                + "Nice! I've marked this task as done:\n"
-                + this.tasks.get(index - 1).taskString() + "\n"
-                + "____________________________________________________________\n");
+        return "Nice! I've marked this task as done:\n"
+                + this.tasks.get(index - 1).taskString() + "\n";
     }
 
     /**
      * Unmarks a task that was previously marked as completed.
      * @param index The index of the task in the list.
      */
-    public void unmarkItem(int index) throws WrongInputException {
+    public String unmarkItem(int index) throws WrongInputException {
         if (!this.tasks.get(index - 1).isTaskCompleted()) {
             throw new WrongInputException();
         }
-        
+
         this.tasks.get(index - 1).changeStatus();
 
-        System.out.println("____________________________________________________________\n"
-                + "OK, I've marked this task as not done yet:\n"
-                + this.tasks.get(index - 1).taskString() + "\n"
-                + "____________________________________________________________\n");
+        return "OK, I've marked this task as not done yet:\n"
+                + this.tasks.get(index - 1).taskString() + "\n";
     }
 
     /**
      * Deletes a task from the list of tasks.
      * @param index The index of the task in the list.
      */
-    public void deleteItem(int index) {
+    public String deleteItem(int index) {
         Task removedItem = this.tasks.remove(index - 1);
 
-        System.out.println("____________________________________________________________\n"
-                + "Noted. I've removed this task:\n"
+        return "Noted. I've removed this task:\n"
                 + removedItem.taskString() + "\n"
-                + "Now you have " + this.tasks.size() + " tasks in the list.\n"
-                + "____________________________________________________________\n");
+                + "Now you have " + this.tasks.size() + " tasks in the list.\n";
     }
 
     /**
@@ -179,7 +172,7 @@ public class TaskList {
         return this.tasks;
     }
 
-    public void find(String keyword) {
+    public String find(String keyword) {
         ArrayList<Task> results = new ArrayList<>();
 
         for (Task task : this.tasks) {
@@ -190,13 +183,12 @@ public class TaskList {
 
         int itemsNum = results.size();
 
-        System.out.println("____________________________________________________________\n"
-                + "Here are the matching tasks in your list:");
+        String result = "Here are the matching tasks in your list:\n";
 
         for (int i = 0; i < itemsNum; i++) {
-            System.out.println(i + 1 + ". " + results.get(i).taskString() + "\n");
+            result += (i + 1) + ". " + results.get(i).taskString() + "\n";
         }
 
-        System.out.println("____________________________________________________________\n");
+        return result;
     }
 }
