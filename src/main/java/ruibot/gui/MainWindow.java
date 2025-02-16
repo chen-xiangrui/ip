@@ -53,6 +53,7 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
 
         if (input.equals("bye")) {
+            assert input.equals("bye") : "input should be bye";
             Stage stage = (Stage) userInput.getScene().getWindow();
             stage.close();
         }

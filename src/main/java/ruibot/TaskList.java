@@ -61,6 +61,7 @@ public class TaskList {
      * @throws EmptyTaskException if the task is empty.
      */
     public String addItem(String input, boolean isCompleted, boolean isStart) throws EmptyTaskException {
+        assert input != null : "Input should not be null";
         Task task;
         String details[];
         String item;
@@ -113,7 +114,7 @@ public class TaskList {
     public String returnList() {
         int itemsNum = this.tasks.size();
 
-       String result = "Here are the tasks in your list:\n";
+        String result = "Here are the tasks in your list:\n";
 
         for (int i = 0; i < itemsNum; i++) {
             result += (i + 1) + ". " + this.tasks.get(i).taskString() + "\n";
@@ -127,6 +128,7 @@ public class TaskList {
      * @param index The index of the task in the list.
      */
     public String markItem(int index) throws WrongInputException {
+        assert index > 0 && index <= this.tasks.size() : "Index is invalid";
         if (this.tasks.get(index - 1).isTaskCompleted()) {
             throw new WrongInputException();
         }
@@ -142,6 +144,7 @@ public class TaskList {
      * @param index The index of the task in the list.
      */
     public String unmarkItem(int index) throws WrongInputException {
+        assert index > 0 && index <= this.tasks.size() : "Index is invalid";
         if (!this.tasks.get(index - 1).isTaskCompleted()) {
             throw new WrongInputException();
         }
