@@ -5,6 +5,7 @@ import ruibot.tasks.ToDo;
 import ruibot.tasks.Deadline;
 import ruibot.tasks.Event;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -18,6 +19,8 @@ public class TaskList {
     private ArrayList<Task> tasks;
     static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+    static final DateTimeFormatter SCHEDULE_INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    static final DateTimeFormatter SCHEDULE_OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     /**
     * Constructor to initialise the TaskList with list of string inputs from user.
@@ -36,7 +39,7 @@ public class TaskList {
                 String[] split_line = remaining_line.split(" \\(by: ");
                 String name = split_line[0];
                 String endDate = split_line[1].split("\\)")[0];
-                String formattedEndDate = LocalDateTime.parse(endDate, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
+                String formattedEndDate = this.formatDate(endDate, "outputToInput");
                 item = "deadline " + name + " /by " + formattedEndDate;
             } else {
                 String remaining_line = line.substring(8);
@@ -86,8 +89,10 @@ public class TaskList {
     public String formatDate(String date, String conversionType) {
         if (conversionType.equals("inputToOutput")) {
             return LocalDateTime.parse(date, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
-        } else {
+        } else if (conversionType.equals("outputToInput")){
             return LocalDateTime.parse(date, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
+        } else {
+            return LocalDate.parse(date, SCHEDULE_INPUT_FORMATTER).format(SCHEDULE_OUTPUT_FORMATTER);
         }
     }
 
@@ -212,7 +217,42 @@ public class TaskList {
 
         int itemsNum = results.size();
 
+        if (itemsNum == 0) {
+            return "OOPS!! No tasks with matching keyword!";
+        }
+
         String result = "Here are the matching tasks in your list:\n";
+
+        for (int i = 0; i < itemsNum; i++) {
+            result += (i + 1) + ". " + results.get(i).taskString() + "\n";
+        }
+
+        return result;
+    }
+
+    public String schedule(String date) throws WrongInputException {
+        ArrayList<Task> results = new ArrayList<>();
+        String convertedDate;
+
+        try {
+            convertedDate = this.formatDate(date, "scheduleConversion");
+        } catch (Exception e) {
+            throw new WrongInputException();
+        }
+
+        for (Task task : this.tasks) {
+            if (task.containsDate(convertedDate)) {
+                results.add(task);
+            }
+        }
+
+        int itemsNum = results.size();
+
+        if (itemsNum == 0) {
+            return "CONGRATS!! No tasks to be completed on " + convertedDate;
+        }
+
+        String result = "Here are the tasks to be completed on " + convertedDate + ":\n";
 
         for (int i = 0; i < itemsNum; i++) {
             result += (i + 1) + ". " + results.get(i).taskString() + "\n";

@@ -13,4 +13,8 @@ public class Deadline extends Task {
 
         return "[D] " + mark + " " + this.name + " (by: " + this.endDate + ")";
     }
+
+    public boolean containsDate(String date) {
+        return endDate.contains(date);
+    }
 }

@@ -21,4 +21,6 @@ public abstract class Task {
     public boolean contains(String keyword) {
         return this.name.contains(keyword);
     }
+
+    public abstract boolean containsDate(String date);
 }

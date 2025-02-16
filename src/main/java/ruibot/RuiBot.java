@@ -52,6 +52,8 @@ public class RuiBot {
                 this.storage.save(this.tasks.getTasks());
             } else if (command.equals("find")) {
                 output = this.tasks.find(input.substring(5));
+            } else if (command.equals("schedule")) {
+                output = this.tasks.schedule(input.substring(9));
             } else {
                 throw new WrongInputException();
             }

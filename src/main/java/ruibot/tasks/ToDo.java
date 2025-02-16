@@ -11,4 +11,8 @@ public class ToDo extends Task {
 
         return "[T] " + mark + " " + this.name;
     }
+
+    public boolean containsDate(String date) {
+        return false;
+    }
 }

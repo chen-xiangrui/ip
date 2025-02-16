@@ -15,4 +15,8 @@ public class Event extends Task {
 
         return "[E] " + mark + " " + this.name + " (from: " + this.startDate + " to: " + this.endDate + ")";
     }
+
+    public boolean containsDate(String date) {
+        return (startDate.contains(date) || endDate.contains(date));
+    }
 }
