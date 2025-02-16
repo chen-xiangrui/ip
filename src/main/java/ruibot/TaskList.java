@@ -44,9 +44,9 @@ public class TaskList {
                 String name = split_line[0];
                 String[] dates = split_line[1].split(" to: ");
                 String startDate = dates[0];
-                String formattedStartDate = LocalDateTime.parse(startDate, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
+                String formattedStartDate = this.formatDate(startDate, "outputToInput");
                 String endDate = dates[1].split("\\)")[0];
-                String formattedEndDate = LocalDateTime.parse(endDate, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
+                String formattedEndDate = this.formatDate(endDate, "outputToInput");
                 item = "event " + name + " /from " + formattedStartDate + " /to " + formattedEndDate;
             }
             this.addItem(item, isCompleted, true);
@@ -63,38 +63,13 @@ public class TaskList {
     public String addItem(String input, boolean isCompleted, boolean isStart) throws EmptyTaskException {
         assert input != null : "Input should not be null";
         Task task;
-        String details[];
-        String item;
 
         if (input.startsWith("todo")) {
-            if (input.length() <= 5) {
-                throw new EmptyTaskException();
-            }
-            item = input.substring(5);
-            task = new ToDo(item, isCompleted);
+            task = createToDoTask(input, isCompleted);
         } else if (input.startsWith("deadline")) {
-            if (input.length() <= 9) {
-                throw new EmptyTaskException();
-            }
-            details = input.substring(9).split(" /by ");
-            item = details[0];
-            String endDate = details[1];
-            String formattedEndDate = LocalDateTime.parse(endDate, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
-            task = new Deadline(item, isCompleted, formattedEndDate);
+            task = createDeadlineTask(input, isCompleted);
         } else {
-            if (input.length() <= 6) {
-                throw new EmptyTaskException();
-            }
-            details = input.substring(6).split(" /from ");
-            item = details[0];
-            if (item.isEmpty()) {
-                throw new EmptyTaskException();
-            }
-            String startDate = details[1].split(" /to ")[0];
-            String formattedStartDate = LocalDateTime.parse(startDate, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
-            String endDate = details[1].split(" /to ")[1];
-            String formattedEndDate = LocalDateTime.parse(endDate, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
-            task = new Event(item, isCompleted, formattedStartDate, formattedEndDate);
+            task = createEventTask(input, isCompleted);
         }
 
         this.tasks.add(task);
@@ -106,6 +81,57 @@ public class TaskList {
         } else {
             return "";
         }
+    }
+
+    public String formatDate(String date, String conversionType) {
+        if (conversionType.equals("inputToOutput")) {
+            return LocalDateTime.parse(date, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
+        } else {
+            return LocalDateTime.parse(date, OUTPUT_FORMATTER).format(INPUT_FORMATTER);
+        }
+    }
+
+    public Task createToDoTask(String input, boolean isCompleted) throws EmptyTaskException {
+        String item;
+
+        if (input.length() <= 5) {
+            throw new EmptyTaskException();
+        }
+        item = input.substring(5);
+        return new ToDo(item, isCompleted);
+    }
+
+    public Task createDeadlineTask(String input, boolean isCompleted) throws EmptyTaskException {
+        String[] details;
+        String item;
+
+        if (input.length() <= 9) {
+            throw new EmptyTaskException();
+        }
+        details = input.substring(9).split(" /by ");
+        item = details[0];
+        String endDate = details[1];
+        String formattedEndDate = this.formatDate(endDate, "inputToOutput");
+        return new Deadline(item, isCompleted, formattedEndDate);
+    }
+
+    public Task createEventTask(String input, boolean isCompleted) throws EmptyTaskException {
+        String[] details;
+        String item;
+
+        if (input.length() <= 6) {
+            throw new EmptyTaskException();
+        }
+        details = input.substring(6).split(" /from ");
+        item = details[0];
+        if (item.isEmpty()) {
+            throw new EmptyTaskException();
+        }
+        String startDate = details[1].split(" /to ")[0];
+        String formattedStartDate = this.formatDate(startDate, "inputToOutput");
+        String endDate = details[1].split(" /to ")[1];
+        String formattedEndDate = this.formatDate(endDate, "inputToOutput");
+        return new Event(item, isCompleted, formattedStartDate, formattedEndDate);
     }
 
     /**
