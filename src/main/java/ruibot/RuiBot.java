@@ -58,7 +58,7 @@ public class RuiBot {
                 throw new WrongInputException();
             }
         } catch (IndexOutOfBoundsException e) {
-            output = "OOPS!! No such item.";
+            output = "OOPS!! This item does not exist.";
         } catch (Exception e) {
             output = "OOPS!! " + e.getMessage();
         }
