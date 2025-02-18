@@ -27,7 +27,8 @@ public class Storage {
     public Storage(String filePath) {
         this.filePath = filePath;
         try {
-            this.file = new File(this.filePath);
+            String userDir = System.getProperty("user.dir");
+            this.file = new File(userDir, this.filePath);
             file.createNewFile();
             this.scanner = new Scanner(this.file);
         } catch (IOException e) {
