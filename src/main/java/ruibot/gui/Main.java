@@ -14,7 +14,7 @@ import ruibot.RuiBot;
  */
 public class Main extends Application {
 
-    private RuiBot ruibot = new RuiBot("./data/ruibot.txt");
+    private RuiBot ruibot = new RuiBot("data", "/ruibot.txt");
 
     /**
      * Starts running the stage of the application.

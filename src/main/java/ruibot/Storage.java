@@ -17,19 +17,27 @@ import java.util.Scanner;
 public class Storage {
     private File file;
     private Scanner scanner;
-    private String filePath;
+    private String fileDirectory;
+    private String fileName;
 
     /**
-     * Constructor to initialise Storage with the filepath of ruibot.txt.
+     * Constructor to initialise Storage with the filepath of file storing the tasks.
      *
-     * @param filePath The filepath of ruibot.txt.
+     * @param fileDirectory The file directory of file storing the tasks.
+     * @param fileName The file name storing the tasks.
      */
-    public Storage(String filePath) {
-        this.filePath = filePath;
+    public Storage(String fileDirectory, String fileName) {
+        this.fileDirectory = fileDirectory;
+        this.fileName = fileName;
         try {
-            String userDir = System.getProperty("user.dir");
-            this.file = new File(userDir, this.filePath);
-            file.createNewFile();
+            File directory = new File(this.fileDirectory);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            this.file = new File(this.fileDirectory + this.fileName);
+            if (!this.file.exists()){
+                this.file.createNewFile();
+            }
             this.scanner = new Scanner(this.file);
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -58,7 +66,7 @@ public class Storage {
      */
     public void save(ArrayList<Task> tasks) {
         try {
-            FileWriter fw = new FileWriter(this.filePath, false);
+            FileWriter fw = new FileWriter(this.fileDirectory + this.fileName, false);
             for (Task task : tasks) {
                 fw.write(task.taskString() + System.lineSeparator());
             }

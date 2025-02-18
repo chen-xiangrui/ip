@@ -12,12 +12,13 @@ public class RuiBot {
     /**
      * Initialises a RuiBot object with the filepath of ruibot.txt.
      *
-     * @param filePath The filepath of the ruibot.txt storing the tasks.
+     * @param fileDirectory The file directory storing the tasks.
+     * @param fileName The file name storing the tasks.
      * @throws EmptyTaskException If the task is empty.
      */
-    public RuiBot(String filePath) {
+    public RuiBot(String fileDirectory, String fileName) {
         this.ui = new Ui();
-        this.storage = new Storage(filePath);
+        this.storage = new Storage(fileDirectory, fileName);
         try {
             this.tasks = new TaskList(storage.load());
         } catch (Exception e) {
