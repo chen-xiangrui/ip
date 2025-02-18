@@ -48,7 +48,7 @@ application {
 
 shadowJar {
     archiveBaseName = "ruibot"
-    archiveVersion = "2.0"
+    archiveVersion = "3.0"
     archiveClassifier = null
 }
 
