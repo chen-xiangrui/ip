@@ -21,6 +21,7 @@ public class Storage {
 
     /**
      * Constructor to initialise Storage with the filepath of ruibot.txt.
+     *
      * @param filePath The filepath of ruibot.txt.
      */
     public Storage(String filePath) {
@@ -37,6 +38,7 @@ public class Storage {
 
     /**
      * Load the tasks stored in ruibot.txt.
+     *
      * @return List of strings with each string containing the task.
      */
     public ArrayList<String> load() {
@@ -50,6 +52,7 @@ public class Storage {
 
     /**
      * Save the tasks into ruibot.txt.
+     *
      * @param tasks List of tasks to be stored.
      */
     public void save(ArrayList<Task> tasks) {

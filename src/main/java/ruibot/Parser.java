@@ -7,6 +7,7 @@ public class Parser {
 
     /**
      * Read the input from the user and categorise it into a command type.
+     *
      * @param input The input by the user.
      * @return The Command type of the input.
      */

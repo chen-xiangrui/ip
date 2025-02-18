@@ -10,9 +10,10 @@ public class RuiBot {
     private Ui ui;
 
     /**
-     * Constructor to initialise the RuiBot with the filepath of ruibot.txt.
+     * Initialises a RuiBot object with the filepath of ruibot.txt.
+     *
      * @param filePath The filepath of the ruibot.txt storing the tasks.
-     * @throws EmptyTaskException if the task is empty.
+     * @throws EmptyTaskException If the task is empty.
      */
     public RuiBot(String filePath) {
         this.ui = new Ui();
@@ -27,7 +28,7 @@ public class RuiBot {
     }
 
     /**
-     * Generates a response for the user's chat message.
+     * Returns the response for the user's chat message.
      */
     public String getResponse(String input) {
         String output;

@@ -16,6 +16,14 @@ public class Main extends Application {
 
     private RuiBot ruibot = new RuiBot("./data/ruibot.txt");
 
+    /**
+     * Starts running the stage of the application.
+     *
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     */
     @Override
     public void start(Stage stage) {
         try {

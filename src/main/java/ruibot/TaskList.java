@@ -58,6 +58,7 @@ public class TaskList {
 
     /**
      * Adds task to list of tasks.
+     *
      * @param input Input of a task by the user.
      * @param isCompleted Indicates whether the task has been completed.
      * @param isStart Indicates whether this method is being called when the RuiBot is first started.
@@ -86,6 +87,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns a formatted date based on the date conversion type stated.
+     *
+     * @param date The date to be formatted.
+     * @param conversionType The type of conversion the user wants to apply on the date.
+     * @return Formatted date.
+     */
     public String formatDate(String date, String conversionType) {
         if (conversionType.equals("inputToOutput")) {
             return LocalDateTime.parse(date, INPUT_FORMATTER).format(OUTPUT_FORMATTER);
@@ -96,6 +104,14 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns Task of to do type.
+     *
+     * @param input Input by user.
+     * @param isCompleted Whether the task has been completed.
+     * @return Task object.
+     * @throws EmptyTaskException If task provided is empty.
+     */
     public Task createToDoTask(String input, boolean isCompleted) throws EmptyTaskException {
         String item;
 
@@ -106,6 +122,14 @@ public class TaskList {
         return new ToDo(item, isCompleted);
     }
 
+    /**
+     * Returns Task of deadline type.
+     *
+     * @param input Input by user.
+     * @param isCompleted Whether the task has been completed.
+     * @return Task object.
+     * @throws EmptyTaskException If task provided is empty.
+     */
     public Task createDeadlineTask(String input, boolean isCompleted) throws EmptyTaskException {
         String[] details;
         String item;
@@ -120,6 +144,14 @@ public class TaskList {
         return new Deadline(item, isCompleted, formattedEndDate);
     }
 
+    /**
+     * Returns Task of event type.
+     *
+     * @param input Input by user.
+     * @param isCompleted Whether the task has been completed.
+     * @return Task object.
+     * @throws EmptyTaskException If task provided is empty.
+     */
     public Task createEventTask(String input, boolean isCompleted) throws EmptyTaskException {
         String[] details;
         String item;
@@ -156,6 +188,7 @@ public class TaskList {
 
     /**
      * Marks a task as completed.
+     *
      * @param index The index of the task in the list.
      */
     public String markItem(int index) throws WrongInputException {
@@ -172,6 +205,7 @@ public class TaskList {
 
     /**
      * Unmarks a task that was previously marked as completed.
+     *
      * @param index The index of the task in the list.
      */
     public String unmarkItem(int index) throws WrongInputException {
@@ -188,6 +222,7 @@ public class TaskList {
 
     /**
      * Deletes a task from the list of tasks.
+     *
      * @param index The index of the task in the list.
      */
     public String deleteItem(int index) {
@@ -200,6 +235,7 @@ public class TaskList {
 
     /**
      * Provides the list of tasks.
+     *
      * @return The list of tasks.
      */
     public ArrayList<Task> getTasks() {
@@ -230,6 +266,14 @@ public class TaskList {
         return result;
     }
 
+    /**
+     * Returns string of text to be printed.
+     * Helps to select tasks to be completed during the given date.
+     *
+     * @param date Date to check if task is required to complete within.
+     * @return String message containing the tasks to be completed on the given date.
+     * @throws WrongInputException If the input provided is wrong.
+     */
     public String schedule(String date) throws WrongInputException {
         ArrayList<Task> results = new ArrayList<>();
         String convertedDate;
